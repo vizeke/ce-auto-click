@@ -10,7 +10,7 @@ class Kabum {
         this.products = []
         this.storage = new Storage()
 
-        $( '.box_botao' ).on( 'click', '.buy-switch', this.buySwitchClick.bind( this ) )
+        $( appConfig.SELECTOR_BOX_BUTTON ).on( 'click', '.buy-switch', this.buySwitchClick.bind( this ) )
     }
 
     proccessPromotionList () {
@@ -21,7 +21,7 @@ class Kabum {
     addBuySwitch ( id ) {
         let buySwitch = $( appConfig.ROUND_SWITCH_HTML )
         buySwitch.find( 'input' ).attr( 'id', id )
-        $( '.box_botao' ).prepend( buySwitch )
+        $( appConfig.SELECTOR_BOX_BUTTON ).prepend( buySwitch )
     }
 
     buySwitchClick ( e ) {
@@ -30,8 +30,7 @@ class Kabum {
 
     startBuyLoop ( id ) {
         const product = new Product();
-        //product.intervalId = setInterval( product.tryClick, appConfig.DEFAULT_BUY_TIMEOUT );
-        product.intervalId = setInterval(() => console.log( id ), appConfig.DEFAULT_BUY_TIMEOUT );
+        product.intervalId = setInterval( product.tryClick, appConfig.DEFAULT_BUY_TIMEOUT );
         this.products.push( { id: id, product: product } )
         this.syncStorage();
     }
