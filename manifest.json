@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "Black Friday Bot",
+    "description": "",
+    "version": "0.1.0",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.kabum.com.br/*"
+            ],
+            "css": [
+                "css/kabum.css"
+            ],
+            "js": [
+                "js/jquery-3.2.1.min.js",
+                "js/config.js",
+                "js/storage.js",
+                "js/product.js",
+                "js/kabum.js",
+                "js/main.js"
+            ]
+        }
+    ],
+    "permissions": [
+        "tabs",
+        "https://www.kabum.com.br/*"
+    ]
+}
