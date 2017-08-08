@@ -15,8 +15,9 @@
                 "js/jquery-3.2.1.min.js",
                 "js/config.js",
                 "js/storage.js",
+                "js/switch.js",
                 "js/product.js",
-                "js/kabum.js",
+                "js/promotion.js",
                 "js/main.js"
             ]
         }

@@ -1,3 +1,3 @@
-const kabum = new Kabum()
-kabum.addBuySwitch('meuId')
+const promotion = new Promotion()
+promotion.addBuySwitch('meuId')
 console.log('added')

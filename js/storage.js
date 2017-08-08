@@ -8,7 +8,7 @@ class Storage {
     }
 
     sync ( obj ) {
-        localStorage[ this.storageName ] = obj;
+        localStorage[ this.storageName ] = JSON.stringify( obj );
     }
 
     remove () {
