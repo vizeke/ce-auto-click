@@ -17,6 +17,7 @@
                 "js/toastr.min.js",
                 "js/config.js",
                 "js/storage.js",
+                "js/observer.js",
                 "js/cart.js",
                 "js/switch.js",
                 "js/product.js",
