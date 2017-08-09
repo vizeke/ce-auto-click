@@ -14,6 +14,7 @@ class Product {
         this.buySwitch = new Switch( url );
         this.buySwitch.toggleObserver.subscribe( this.onSwitchClick, this );
 
+        this.updateObserver = new Observer();
     }
 
     get active () {
@@ -43,6 +44,7 @@ class Product {
     }
 
     onSwitchClick ( checked ) {
+        this.updateObserver.fire();
         checked ? this.startBuyLoop() : this.stopBuyLoop();
     }
 

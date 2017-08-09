@@ -31,6 +31,7 @@ class Promotion {
         const listPromotion = $( document ).find( appConfig.SELECTOR_LIST_PROMOTION ); //TODO: promotion selector
         listPromotion.forEach( promotion => {
             const product = new Product( promotion.product.url );
+            product.updateObserver.subscribe( this.syncStorage, this );
             this.products[ product.id ] = product; //TODO: get product url
         } );
         this.syncStorage( this.products );
@@ -38,7 +39,9 @@ class Promotion {
 
     mockParseProductList () {
         const product = new Product( document.location.href )
+        product.updateObserver.subscribe( this.syncStorage, this );
         this.products[ product.id ] = product;
+        this.syncStorage( this.products );
     }
 
     syncStorage () {
