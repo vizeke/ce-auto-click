@@ -17,29 +17,24 @@ chrome.runtime.onMessage.addListener(
         }
         if ( request.cartList ) {
             checkTabs( promotions, PROMOTION_URL )
-                .then( tabIds => updatePromotions( tabIds ) )
+                .then( tabIds => tabIds.filter( id => id ) )
                 .then( tabIds => createTabIfNecessary( tabIds, PROMOTION_URL ) )
+                .then( tabIds => updatePromotions( tabIds ) )
                 .then( tabIds => tabIds.forEach( tabId => chrome.tabs.sendMessage( tabId, request ) ) );
         }
         if ( request.updateCart ) {
             checkTabs( carts, CART_URL )
-                .then( tabIds => updateCarts( tabIds ) )
+                .then( tabIds => tabIds.filter( id => id ) )
                 .then( tabIds => createTabIfNecessary( tabIds, CART_URL ) )
+                .then( tabIds => updateCarts( tabIds ) )
                 .then( tabIds => tabIds.forEach( tabId => chrome.tabs.sendMessage( tabId, request ) ) );
         }
 
         console.log( sender.tab ? "from a content script:" + sender.tab.url : "from the extension" );
     } );
 
-const updateCarts = ( tabIds ) => {
-    carts = tabIds.filter( id => id );
-    return carts;
-}
-
-const updatePromotions = ( tabIds ) => {
-    promotions = tabIds.filter( id => id );
-    return promotions;
-}
+const updateCarts = ( tabIds ) => carts = tabIds;
+const updatePromotions = ( tabIds ) => promotions = tabIds;
 
 const removeTab = ( list, id ) => list.filter( l => l !== id );
 
