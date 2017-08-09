@@ -20,16 +20,10 @@ class Promotion {
 
     }
 
-    init () {
-        if ( this.storage.products ) {
-            //TODO: Check storage and create products accordingly
-        }
-    }
-
     stopProduct ( id ) {
         const product = this.products[ id ];
         if ( product && product.active ) {
-            product.stopBuyLoop()
+            product.stop();
             // Display a success toast, with a title
             toastr.success( `${product.description} buyed, have fun!`, 'Hu3Hu3 BR' )
         }
@@ -41,18 +35,31 @@ class Promotion {
             const product = new Product( promotion.product.url );
             product.updateObserver.subscribe( this.syncStorage, this );
             this.products[ product.id ] = product; //TODO: get product url
+
+            let savedProduct = this.storage.products[ product.id ];
+            if ( savedProduct && savedProduct.active ) {
+                product.activate();
+            }
         } );
         this.syncStorage( this.products );
     }
 
     mockParseProductList () {
-        const product = new Product( document.location.href )
+        const product = new Product( document.location.href );
         product.updateObserver.subscribe( this.syncStorage, this );
         this.products[ product.id ] = product;
+
+        let savedProduct = this.storage.products[ product.id ];
+        if ( savedProduct && savedProduct.active ) {
+            product.activate();
+        }
+
         this.syncStorage( this.products );
     }
 
     syncStorage () {
-        this.storage.sync( Object.keys(this.products).map( p => ( { id: this.products[p].id, active: this.products[p].active } ) ) );
+        let storageProducts = {};
+        Object.keys( this.products ).forEach( p => storageProducts[ p ] = { active: this.products[ p ].active } );
+        this.storage.sync( storageProducts );
     }
 }

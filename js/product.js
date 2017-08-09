@@ -21,6 +21,10 @@ class Product {
         return this.buySwitch.checked;
     }
 
+    activate () {
+        this.buySwitch.turnOn();
+    }
+
     tryBuy () {
         $.get( this.url, this.tryClickBuy.bind( this ) );
     }
@@ -28,19 +32,27 @@ class Product {
     tryClickBuy ( html ) {
         const button = $( `[data-id=${this.id}]` );
         if ( button.length > 0 ) {
-            // button.click();
-            $.get( button.prop( 'href' ) );
-            this.updateCart();
+            $.get( button.prop( 'href' ), this.updateCart );
         }
     }
 
+    stop () {
+        this.stopBuyLoop();
+        this.buySwitch.turnOff();
+    }
+
     startBuyLoop () {
-        this.intervalId = setInterval( this.tryBuy.bind( this ), appConfig.DEFAULT_BUY_TIMEOUT );
+        //TODO: start only when the promotion is almost on time
+        if ( !this.intervalId ) {
+            this.intervalId = setInterval( this.tryBuy.bind( this ), appConfig.DEFAULT_BUY_TIMEOUT );
+        }
     }
 
     stopBuyLoop () {
-        clearInterval( this.intervalId );
-        this.buySwitch.turnOff();
+        if ( this.intervalId ) {
+            clearInterval( this.intervalId );
+            this.intervalId = undefined;
+        }
     }
 
     onSwitchClick ( checked ) {
