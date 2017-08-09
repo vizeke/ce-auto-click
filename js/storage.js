@@ -7,6 +7,10 @@ class Storage {
         return this.prefix + 'products';
     }
 
+    get products () {
+        return JSON.parse( localStorage[ this.storageName ] );
+    }
+
     sync ( obj ) {
         localStorage[ this.storageName ] = JSON.stringify( obj );
     }

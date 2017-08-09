@@ -16,6 +16,14 @@ class Promotion {
                     request.cartList.forEach( productId => this.stopProduct( productId ) );
                 }
             } );
+
+
+    }
+
+    init () {
+        if ( this.storage.products ) {
+            //TODO: Check storage and create products accordingly
+        }
     }
 
     stopProduct ( id ) {
@@ -23,7 +31,7 @@ class Promotion {
         if ( product && product.active ) {
             product.stopBuyLoop()
             // Display a success toast, with a title
-            toastr.success( `${ product.description } buyed, have fun!`, 'Hu3Hu3 BR' )
+            toastr.success( `${product.description} buyed, have fun!`, 'Hu3Hu3 BR' )
         }
     }
 
