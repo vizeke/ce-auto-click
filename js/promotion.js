@@ -45,6 +45,6 @@ class Promotion {
     }
 
     syncStorage () {
-        this.storage.sync( this.products.map( i => i.id ) );
+        this.storage.sync( Object.keys(this.products).map( p => ( { id: this.products[p].id, active: this.products[p].active } ) ) );
     }
 }
