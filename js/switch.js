@@ -7,8 +7,8 @@
 class Switch {
     constructor( id ) {
         this.buySwitch = undefined
-        this.handlers = [];
         this.add( id );
+        this.toggleObserver = new Observer();
     }
 
     get checked () {
@@ -24,22 +24,10 @@ class Switch {
     }
 
     onClick ( e ) {
-        this.fire( e.target.checked )
+        this.toggleObserver.fire( e.target.checked )
     }
 
     turnOff () {
         this.buySwitch.find( 'input' ).prop( 'checked', false );
-    }
-
-    subscribe ( fn, that ) {
-        this.handlers.push( { fn, that } );
-    }
-
-    unsubscribe ( fn ) {
-        this.handlers = this.handlers.filter(( item ) => item !== fn );
-    }
-
-    fire ( obj ) {
-        this.handlers.forEach( o => o.fn.call( o.that, obj ) );
     }
 }

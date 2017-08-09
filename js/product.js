@@ -12,7 +12,8 @@ class Product {
         this.description = 'Processador Intel Core i5-7600k Kaby Lake 7a Geração, Cache 6MB, 3.8GHz (4.2GHz Max Turbo), LGA 1151 BX80677I57600K';
         this.intervalId = undefined;
         this.buySwitch = new Switch( url );
-        this.buySwitch.subscribe( this.onSwitchClick, this );
+        this.buySwitch.toggleObserver.subscribe( this.onSwitchClick, this );
+
     }
 
     get active () {
