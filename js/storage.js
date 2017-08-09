@@ -4,7 +4,7 @@ class Storage {
     }
 
     get storageName () {
-        return this.prefix + 'switches';
+        return this.prefix + 'products';
     }
 
     sync ( obj ) {

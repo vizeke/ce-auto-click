@@ -9,12 +9,15 @@
                 "https://www.kabum.com.br/*"
             ],
             "css": [
-                "css/kabum.css"
+                "css/kabum.css",
+                "css/toastr.min.css"
             ],
             "js": [
                 "js/jquery-3.2.1.min.js",
+                "js/toastr.min.js",
                 "js/config.js",
                 "js/storage.js",
+                "js/cart.js",
                 "js/switch.js",
                 "js/product.js",
                 "js/promotion.js",
@@ -22,6 +25,12 @@
             ]
         }
     ],
+    "background": {
+        "persistent": false,
+        "scripts": [
+            "background.js"
+        ]
+    },
     "permissions": [
         "tabs",
         "https://www.kabum.com.br/*"

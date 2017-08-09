@@ -6,22 +6,39 @@
 class Promotion {
 
     constructor() {
-        this.products = []
+        this.products = {}
         this.storage = new Storage()
+        chrome.runtime.sendMessage( { addPromotion: true } );
 
-        // $( appConfig.SELECTOR_BOX_BUTTON ).on( 'click', '.buy-switch', this.buySwitchClick.bind( this ) )
+        chrome.runtime.onMessage.addListener(
+            ( request, sender, sendResponse ) => {
+                if ( request.cartList ) {
+                    request.cartList.forEach( productId => this.stopProduct( productId ) );
+                }
+            } );
+    }
+
+    stopProduct ( id ) {
+        const product = this.products[ id ];
+        if ( product && product.active ) {
+            product.stopBuyLoop()
+            // Display a success toast, with a title
+            toastr.success( `${ product.description } buyed, have fun!`, 'Hu3Hu3 BR' )
+        }
     }
 
     parseProductList () {
-        const listPromotion = $( document ).find( appConfig.SELECTOR_LIST_PROMOTION );
+        const listPromotion = $( document ).find( appConfig.SELECTOR_LIST_PROMOTION ); //TODO: promotion selector
         listPromotion.forEach( promotion => {
-            this.products.push( new Product( promotion.product.url ) ) //TODO
-        } ); 
-        this.syncStorage( this.products )
+            const product = new Product( promotion.product.url );
+            this.products[ product.id ] = product; //TODO: get product url
+        } );
+        this.syncStorage( this.products );
     }
 
     mockParseProductList () {
-        new Product( promotion.product.url )
+        const product = new Product( document.location.href )
+        this.products[ product.id ] = product;
     }
 
     syncStorage () {

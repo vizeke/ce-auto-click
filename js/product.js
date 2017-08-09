@@ -7,33 +7,45 @@
 class Product {
 
     constructor( url ) {
-        this.id = url
-        this.url = url
-        this.intervalId = undefined
-        this.buySwitch = new Switch( url )
-        this.buySwitch.subscribe( this.onSwitchClick )
+        this.id = parseInt( url.split( 'produto/' )[ 1 ].split( '/' )[ 0 ] ); // TODO: get productId
+        this.url = url;
+        this.description = 'Processador Intel Core i5-7600k Kaby Lake 7a Geração, Cache 6MB, 3.8GHz (4.2GHz Max Turbo), LGA 1151 BX80677I57600K';
+        this.intervalId = undefined;
+        this.buySwitch = new Switch( url );
+        this.buySwitch.subscribe( this.onSwitchClick, this );
+    }
+
+    get active () {
+        return this.buySwitch.checked;
     }
 
     tryBuy () {
-        return $.get( this.url, this.tryClickBuy );
+        $.get( this.url, this.tryClickBuy.bind( this ) );
     }
 
     tryClickBuy ( html ) {
-        const button = $( html ).find( appConfig.SELECTOR_BUY_BUTTON ).first()
+        const button = $( `[data-id=${this.id}]` );
         if ( button.length > 0 ) {
-            button.click()
+            // button.click();
+            $.get( button.prop( 'href' ) );
+            this.updateCart();
         }
     }
 
     startBuyLoop () {
-        this.intervalId = setInterval( product.tryBuy, appConfig.DEFAULT_BUY_TIMEOUT );
+        this.intervalId = setInterval( this.tryBuy.bind( this ), appConfig.DEFAULT_BUY_TIMEOUT );
     }
 
-    stopBuyLoop ( id ) {
+    stopBuyLoop () {
         clearInterval( this.intervalId );
+        this.buySwitch.turnOff();
     }
 
     onSwitchClick ( checked ) {
-        checked ? this.startBuyLoop() : this.stopBuyLoop()
+        checked ? this.startBuyLoop() : this.stopBuyLoop();
+    }
+
+    updateCart () {
+        chrome.runtime.sendMessage( { updateCart: true, productId: this.id } );
     }
 }
