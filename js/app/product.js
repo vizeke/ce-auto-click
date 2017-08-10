@@ -30,10 +30,22 @@ class Product {
     }
 
     tryClickBuy ( html ) {
+
+        //let d = performance.now();
+        let link = html.substring( html.indexOf( 'void(1)\');" href="' ) + 18 )
+        link = l.substring( 0, l.indexOf( '"' ) )
+        if ( link ) {
+            $.get( link, this.updateCart );
+        }
+        //console.log( "nativo: " + ( performance.now() - d ) )
+
+        /* d = performance.now();
+        let body = $(html);
+        console.log( "jquery: " + ( performance.now() - d ) ) 
         const link = document.querySelectorAll( `[data-id="${this.id}"]` );
         if ( link.length > 0 ) {
             $.get( link[ 0 ].href, this.updateCart );
-        }
+        }*/
     }
 
     stop () {
