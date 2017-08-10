@@ -30,9 +30,9 @@ class Product {
     }
 
     tryClickBuy ( html ) {
-        const button = $( `[data-id=${this.id}]` );
-        if ( button.length > 0 ) {
-            $.get( button.prop( 'href' ), this.updateCart );
+        const link = document.querySelectorAll( `[data-id="${this.id}"]` );
+        if ( link.length > 0 ) {
+            $.get( link[ 0 ].href, this.updateCart );
         }
     }
 
