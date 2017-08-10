@@ -13,15 +13,15 @@
                 "css/toastr.min.css"
             ],
             "js": [
-                "js/jquery-3.2.1.min.js",
-                "js/toastr.min.js",
-                "js/config.js",
-                "js/storage.js",
-                "js/observer.js",
-                "js/cart.js",
-                "js/switch.js",
-                "js/product.js",
-                "js/promotion.js",
+                "js/imports/jquery-3.2.1.min.js",
+                "js/imports/toastr.min.js",
+                "js/shared/config.js",
+                "js/shared/storage.js",
+                "js/shared/observer.js",
+                "js/app/cart.js",
+                "js/app/switch.js",
+                "js/app/product.js",
+                "js/app/promotion.js",
                 "js/main.js"
             ]
         }
@@ -29,7 +29,7 @@
     "background": {
         "persistent": false,
         "scripts": [
-            "background.js"
+            "js/background.js"
         ]
     },
     "permissions": [
