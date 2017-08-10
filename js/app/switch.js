@@ -30,7 +30,7 @@ class Switch {
         this.buySwitch = $( appConfig.ROUND_SWITCH_HTML );
         this.input = this.buySwitch.find( 'input' );
         this.input
-            .attr( 'id', id )
+            .attr( 'id', `buy-switch-${id}` )
             .on( 'click', this.onClick.bind( this ) );
         $( appConfig.SELECTOR_BOX_BUTTON ).prepend( this.buySwitch );
     }
