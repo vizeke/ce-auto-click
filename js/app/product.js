@@ -18,10 +18,13 @@ class Product {
         this.id = parseInt( url.split( 'produto/' )[ 1 ].split( '/' )[ 0 ] ); // TODO: might change
         this.url = appConfig.PRODUCT_BASE_URL + this.id;
         this.description = anchor.text();
-        this.bought = false;
         this.intervalId = undefined;
         this.buySwitch = new Switch( this.id );
         this.buySwitch.toggleObserver.subscribe( this.onSwitchClick, this );
+        
+        this.bought = false;
+        this.successHits = 0;
+        this.maxSuccessHitsNeeded = 3;
 
         $product.prepend( this.buySwitch.getElement() );
 
@@ -49,7 +52,12 @@ class Product {
 
         link = link.substring( 0, link.indexOf( '"' ) )
         if ( link ) {
-            $.get( link, () => this.checkCart() );
+            $.get( link, () => {
+                this.checkCart();
+                if ( ++this.successHits >= this.maxSuccessHitsNeeded ) {
+                    this.stop();
+                }
+            } );
         }
         //console.log( "nativo: " + ( performance.now() - d ) )
 
@@ -87,16 +95,16 @@ class Product {
     }
 
     checkCart () {
-        if ( !this.bought ) {
-            $.get( 'https://www.kabum.com.br/cgi-local/site/carrinho/carrinho.cgi', ( data ) => {
-                if ( !this.bought && $( data ).find( `.carrinhoTabela [data-id=${this.id}]` ).length ) {
-                    this.stop();
+        $.get( 'https://www.kabum.com.br/cgi-local/site/carrinho/carrinho.cgi', ( data ) => {
+            if ( $( data ).find( `.carrinhoTabela [data-id=${this.id}]` ).length ) {
+                this.stop();
+                if ( !this.bought ) {
                     this.bought = true;
                     toastr.success( `${this.description} bought, have fun!`, 'Hu3Hu3 BR' )
                     this.updateCart();
                 }
-            });
-        }
+            }
+        });
     }
 
     updateCart () {
