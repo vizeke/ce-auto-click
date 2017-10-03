@@ -1,4 +1,11 @@
-    /* The switch - the box around the slider */
+button.activate {
+  position: fixed;
+  top: 0;
+  width: 150px;
+  height: 50px;
+}
+
+/* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;

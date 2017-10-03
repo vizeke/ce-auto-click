@@ -10,8 +10,6 @@ class Cart {
                 if ( request.updateCart ) {
                     if ( !this.cartList.some( id => id === request.productId ) ) {
                         window.location.reload();
-                    } else {
-                        chrome.runtime.sendMessage( { cartList: [ request.productId ] } );
                     }
                 }
 

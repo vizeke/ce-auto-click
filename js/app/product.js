@@ -7,11 +7,18 @@
 class Product {
 
     constructor( $product ) {
-        let productUrl = product.find( '.contBLOCO1.contadorFOTO a' ).attr( 'href' );
-
-        this.id = parseInt( url.split( 'produto/' )[ 1 ].split( '/' )[ 0 ] ); // TODO: get productId
-        this.url = url;
-        this.description = 'Processador Intel Core i5-7600k Kaby Lake 7a Geração, Cache 6MB, 3.8GHz (4.2GHz Max Turbo), LGA 1151 BX80677I57600K';
+        const anchor = $product.find( appConfig.SELECTOR_PRODUCT_NAME );
+        
+        if ( !anchor.length ) {
+            return;
+        }
+        
+        const url = anchor.attr( 'href' );
+        
+        this.id = parseInt( url.split( 'produto/' )[ 1 ].split( '/' )[ 0 ] ); // TODO: might change
+        this.url = appConfig.PRODUCT_BASE_URL + this.id;
+        this.description = anchor.text();
+        this.bought = false;
         this.intervalId = undefined;
         this.buySwitch = new Switch( this.id );
         this.buySwitch.toggleObserver.subscribe( this.onSwitchClick, this );
@@ -36,10 +43,13 @@ class Product {
     tryClickBuy ( html ) {
 
         //let d = performance.now();
-        let link = html.substring( html.indexOf( 'void(1)\');" href="' ) + 18 )
-        link = l.substring( 0, l.indexOf( '"' ) )
+
+        const strToFind = appConfig.ADD_TO_CART_BOUNDARY + this.id;
+        let link = html.substring( html.indexOf( strToFind ));
+
+        link = link.substring( 0, link.indexOf( '"' ) )
         if ( link ) {
-            $.get( link, this.updateCart );
+            $.get( link, () => this.checkCart() );
         }
         //console.log( "nativo: " + ( performance.now() - d ) )
 
@@ -72,8 +82,21 @@ class Product {
     }
 
     onSwitchClick ( checked ) {
-        this.updateObserver.fire();
+        this.updateObserver.fire(this);
         checked ? this.startBuyLoop() : this.stopBuyLoop();
+    }
+
+    checkCart () {
+        if ( !this.bought ) {
+            $.get( 'https://www.kabum.com.br/cgi-local/site/carrinho/carrinho.cgi', ( data ) => {
+                if ( !this.bought && $( data ).find( `.carrinhoTabela [data-id=${this.id}]` ).length ) {
+                    this.stop();
+                    this.bought = true;
+                    toastr.success( `${this.description} bought, have fun!`, 'Hu3Hu3 BR' )
+                    this.updateCart();
+                }
+            });
+        }
     }
 
     updateCart () {

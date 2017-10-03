@@ -8,7 +8,7 @@ class Storage {
     }
 
     get products () {
-        return JSON.parse( localStorage[ this.storageName ] );
+        return JSON.parse( localStorage[ this.storageName ] || '{}' );
     }
 
     sync ( obj ) {

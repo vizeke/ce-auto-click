@@ -1,7 +1,7 @@
 let carts = [];
 let promotions = [];
 const CART_URL = 'https://www.kabum.com.br/cgi-local/site/carrinho/carrinho.cgi';
-const PROMOTION_URL = 'https://www.kabum.com.br/produto/84402';
+const PROMOTION_URL = 'https://www.kabum.com.br/ofertas/lista';
 
 chrome.runtime.onMessage.addListener(
     ( request, sender, sendResponse ) => {
@@ -9,18 +9,6 @@ chrome.runtime.onMessage.addListener(
             if ( !carts.some( c => c === sender.tab.id ) ) {
                 carts.push( sender.tab.id );
             }
-        }
-        if ( request.addPromotion ) {
-            if ( !promotions.some( c => c === sender.tab.id ) ) {
-                promotions.push( sender.tab.id );
-            }
-        }
-        if ( request.cartList ) {
-            checkTabs( promotions, PROMOTION_URL )
-                .then( tabIds => tabIds.filter( id => id ) )
-                .then( tabIds => createTabIfNecessary( tabIds, PROMOTION_URL ) )
-                .then( tabIds => updatePromotions( tabIds ) )
-                .then( tabIds => tabIds.forEach( tabId => chrome.tabs.sendMessage( tabId, request ) ) );
         }
         if ( request.updateCart ) {
             checkTabs( carts, CART_URL )
@@ -34,7 +22,6 @@ chrome.runtime.onMessage.addListener(
     } );
 
 const updateCarts = ( tabIds ) => carts = tabIds;
-const updatePromotions = ( tabIds ) => promotions = tabIds;
 
 const removeTab = ( list, id ) => list.filter( l => l !== id );
 
