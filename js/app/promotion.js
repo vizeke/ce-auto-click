@@ -31,8 +31,8 @@ class Promotion {
 
     parseProductList () {
         const listPromotion = $( document ).find( appConfig.SELECTOR_LIST_PROMOTION ); //TODO: promotion selector
-        listPromotion.forEach( promotion => {
-            const product = new Product( promotion.product.url );
+        listPromotion.each( $product => {
+            const product = new Product( $product );
             product.updateObserver.subscribe( this.syncStorage, this );
             this.products[ product.id ] = product; //TODO: get product url
 
@@ -58,6 +58,7 @@ class Promotion {
     }
 
     syncStorage () {
+        console.log('syncing storage');
         let storageProducts = {};
         Object.keys( this.products ).forEach( p => storageProducts[ p ] = { active: this.products[ p ].active } );
         this.storage.sync( storageProducts );

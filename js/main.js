@@ -23,10 +23,37 @@
         reset: () => time = 0
     };
 } )(); */
+$( document ).ready(() => {
+    let _send = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.send = () => {
 
-if ( window.location.href.indexOf( 'https://www.kabum.com.br/produto' ) >= 0 ) {
+        /* Wrap onreadystaechange callback */
+        var callback = this.onreadystatechange;
+        this.onreadystatechange = () => {
+            if ( this.readyState == 4 ) {
 
-    const main = () => new Promotion().mockParseProductList();
+                console.log( 'ajaxComplete' );
+                console.log( arguments );
+
+                /* We are in response; do something, like logging or anything you want */
+
+            }
+
+            callback.apply( this, arguments );
+        }
+
+        _send.apply( this, arguments );
+    }
+} );
+
+if ( window.location.href.indexOf( 'https://www.kabum.com.br/ofertas/lista' ) >= 0 ) {
+
+    $( document ).ajaxComplete(() => {
+        console.log( 'ajax stop' );
+        console.log( $( 'div.DIVcontador' ).length );
+    } );
+
+    const main = () => new Promotion().parseProductList();
 
     // Zone.current.fork( profilingZoneSpec ).run( main );
     main();
