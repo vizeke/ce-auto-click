@@ -13,7 +13,7 @@ class Promotion {
     parseProductList () {
         $('.ce-auto-click.switch').remove();
         
-        const listPromotion = $( document ).find( appConfig.SELECTOR_LIST_PROMOTION ); //TODO: promotion selector
+        const listPromotion = $( document ).find( appConfig.SELECTOR_LIST_PROMOTION );
         listPromotion.each( ( index, prod ) => {
             const product = new Product( $(prod) );
         

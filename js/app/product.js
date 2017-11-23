@@ -8,23 +8,25 @@ class Product {
 
     constructor( $product ) {
         const anchor = $product.find( appConfig.SELECTOR_PRODUCT_NAME );
-        
+
         if ( !anchor.length ) {
             return;
         }
-        
+
         const url = anchor.attr( 'href' );
-        
+
         this.id = parseInt( url.split( 'produto/' )[ 1 ].split( '/' )[ 0 ] ); // TODO: might change
         this.url = appConfig.PRODUCT_BASE_URL + this.id;
         this.description = anchor.text();
         this.intervalId = undefined;
         this.buySwitch = new Switch( this.id );
         this.buySwitch.toggleObserver.subscribe( this.onSwitchClick, this );
-        
+
         this.bought = false;
         this.successHits = 0;
         this.maxSuccessHitsNeeded = 3;
+        this.timeoutItsTime = null;
+        this.$product = $product;
 
         $product.prepend( this.buySwitch.getElement() );
 
@@ -48,7 +50,7 @@ class Product {
         //let d = performance.now();
 
         const strToFind = appConfig.ADD_TO_CART_BOUNDARY + this.id;
-        let link = html.substring( html.indexOf( strToFind ));
+        let link = html.substring( html.indexOf( strToFind ) );
 
         link = link.substring( 0, link.indexOf( '"' ) )
         if ( link ) {
@@ -76,7 +78,6 @@ class Product {
     }
 
     startBuyLoop () {
-        //TODO: start only when the promotion is almost on time
         if ( !this.intervalId ) {
             this.intervalId = setInterval( this.tryBuy.bind( this ), appConfig.DEFAULT_BUY_TIMEOUT );
         }
@@ -90,8 +91,41 @@ class Product {
     }
 
     onSwitchClick ( checked ) {
-        this.updateObserver.fire(this);
-        checked ? this.startBuyLoop() : this.stopBuyLoop();
+        this.updateObserver.fire( this );
+
+        if ( !checked ) {
+            this.stopBuyLoop();
+        }
+
+        this.countdownLoop();
+    }
+
+    countdownLoop () {
+        if ( this.buySwitch.checked ) {
+            if ( this.iiiiiiitsTiiiiiime() ) {
+                this.startBuyLoop();
+            } else {
+                setTimeout( this.countdownLoop, 1000 );
+            }
+        }
+    }
+
+    iiiiiiitsTiiiiiime () {
+        let time = $product.find( appConfig.SELECTOR_PRODUCT_TIME );
+
+        if ( !time.length ) {
+            return $product.find( appConfig.SELECTOR_PRODUCT_BUY_BUTTON ).length > 0;
+        }
+
+        let strTime = time.html();
+
+        let secondsToPromotion = strTime
+            .split( ':' )
+            .map( i => parseInt( i ) )
+            .reverse()
+            .reduce( ( acum, value, index ) => acum + value * Math.pow( 60, index ), 0 );
+
+        return secondsToPromotion <= appConfig.START_BUY_LOOP_GAP;
     }
 
     checkCart () {
@@ -104,7 +138,7 @@ class Product {
                     this.updateCart();
                 }
             }
-        });
+        } );
     }
 
     updateCart () {
