@@ -14,6 +14,6 @@ const appConfig = {
     ROUND_SWITCH_HTML: '<label class="switch ce-auto-click"><input class="buy-switch" type="checkbox"><span class="slider-input round"></span></label>',
     ACTIVATE_BUTTON_HTML: '<button class="activate">Ativar</button>',
 
-    DEFAULT_BUY_TIMEOUT: 1000, 
+    DEFAULT_BUY_TIMEOUT: 100, 
     START_BUY_LOOP_GAP: 20
 }
