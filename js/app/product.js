@@ -50,7 +50,7 @@ class Product {
 
         //let d = performance.now();
 
-        const strToFind = appConfig.ADD_TO_CART_BOUNDARY + this.id;
+        const strToFind = appConfig.ADD_TO_CART_BOUNDARY + this.id + '&di=';
         let link = html.substring( html.indexOf( strToFind ) );
 
         link = link.substring( 0, link.indexOf( '"' ) )
