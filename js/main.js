@@ -24,7 +24,7 @@
     };
 } )(); */
 
-if ( window.location.href.indexOf( 'https://www.kabum.com.br/ofertas/lista' ) >= 0 ) {
+if ( window.location.href.indexOf( 'https://www.kabum.com.br/ofertas/blackfriday' ) >= 0 ) {
 
     const main = () => new Promotion().parseProductList();
     
