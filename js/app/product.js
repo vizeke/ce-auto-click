@@ -24,8 +24,8 @@ class Product {
         this.buySwitch.toggleObserver.subscribe( this.onSwitchClick, this );
 
         this.bought = false;
-        this.successHits = 0;
-        this.maxSuccessHitsNeeded = 3;
+        // this.successHits = 0;
+        // this.maxSuccessHitsNeeded = 3;
         this.timeoutItsTime = null;
         this.$product = $product;
 
@@ -56,9 +56,9 @@ class Product {
         if ( link ) {
             $.get( link, () => {
                 this.checkCartThrottle();
-                if ( ++this.successHits >= this.maxSuccessHitsNeeded ) {
-                    this.stop();
-                }
+                //if ( ++this.successHits >= this.maxSuccessHitsNeeded ) {
+                this.stop();
+                //}
             } );
         }
     }
