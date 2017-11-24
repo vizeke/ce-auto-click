@@ -4,6 +4,10 @@ const appConfig = {
     SELECTOR_PRODUCT_NAME: '.contBLOCO2 .contTITULO.link a',
     SELECTOR_PRODUCT_TIME: 'span.t',
     SELECTOR_PRODUCT_BUY_BUTTON: 'span.at',
+    SELECTOR_CARRINHO_BTO_FINISH: 'div.carrinho-bto-finish a',
+    SELECTOR_BUTTON_BOLETO: 'div#boleto .bot-pagamento input',
+    SELECTOR_CHECK_TERMS: '.box_confirma input#checkboxTermos',
+    SELECTOR_FORM_CONFIRM_BUY: 'form#caixa_confirmacao_form',
 
     PRODUCT_BASE_URL: 'https://www.kabum.com.br/cgi-local/site/produtos/descricao_ofertas.cgi?codigo=',
 
@@ -15,5 +19,6 @@ const appConfig = {
     ACTIVATE_BUTTON_HTML: '<button class="activate">Ativar</button>',
 
     DEFAULT_BUY_TIMEOUT: 100, 
-    START_BUY_LOOP_GAP: 20
+    START_BUY_LOOP_GAP: 20,
+    AUTO_BUY: true
 }

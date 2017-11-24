@@ -1,12 +1,13 @@
 class Cart {
     constructor() {
-        $( document ).ready(() => chrome.runtime.sendMessage( { cartList: this.cartList } ) );
-        
+        $( document ).ready( () => chrome.runtime.sendMessage( { cartList: this.cartList } ) );
+
         chrome.runtime.sendMessage( { addCart: true } );
 
         chrome.runtime.onMessage.addListener(
             ( request, sender, sendResponse ) => {
                 console.log( 'background message received' );
+                console.log( request );
                 if ( request.updateCart ) {
                     if ( !this.cartList.some( id => id === request.productId ) ) {
                         window.location.reload();
@@ -21,7 +22,7 @@ class Cart {
 
     get cartList () {
         const productsId = [];
-        $( '.carrinhoTabela [data-id]' ).each(( i, product ) => {
+        $( '.carrinhoTabela [data-id]' ).each( ( i, product ) => {
             const id = $( product ).data( 'id' );
             if ( !productsId.some( p => p === id ) ) {
                 productsId.push( id )

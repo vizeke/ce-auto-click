@@ -24,9 +24,6 @@
     };
 } )(); */
 
-console.log( 'teste-blackfriday fora do if' );
-
-
 if ( window.location.href.indexOf( 'https://www.kabum.com.br/ofertas/blackfriday' ) >= 0
     || window.location.href.indexOf( 'https://blackfriday.kabum.com.br' ) >= 0 ) {
 
@@ -40,6 +37,27 @@ if ( window.location.href.indexOf( 'https://www.kabum.com.br/ofertas/blackfriday
 
     // Zone.current.fork( profilingZoneSpec ).run( main );
 }
+
 if ( window.location.href.indexOf( 'https://www.kabum.com.br/cgi-local/site/carrinho' ) >= 0 ) {
-    new Cart();
+    if ( appConfig.AUTO_BUY ) {
+        $( document ).ready( () => {
+            window.open( $( appConfig.SELECTOR_CARRINHO_BTO_FINISH ).attr( 'href' ), '_top' );
+        } );
+    } else {
+        new Cart();
+    }
 }
+
+if ( window.location.href.indexOf( 'https://www.kabum.com.br/cgi-local/site/caixa/pagamento' ) >= 0 ) {
+    $( document ).ready( () => {
+        $( appConfig.SELECTOR_BUTTON_BOLETO ).click();
+    } );
+}
+
+if ( window.location.href.indexOf( 'https://www.kabum.com.br/cgi-local/site/caixa/confirmacao' ) >= 0 ) {
+    $( document ).ready( () => {
+        $( appConfig.SELECTOR_CHECK_TERMS ).click();
+        $( appConfig.SELECTOR_FORM_CONFIRM_BUY ).trigger( "submit" );
+    } );
+}
+
