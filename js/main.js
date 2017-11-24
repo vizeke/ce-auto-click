@@ -49,15 +49,19 @@ if ( window.location.href.indexOf( 'https://www.kabum.com.br/cgi-local/site/carr
 }
 
 if ( window.location.href.indexOf( 'https://www.kabum.com.br/cgi-local/site/caixa/pagamento' ) >= 0 ) {
-    $( document ).ready( () => {
-        $( appConfig.SELECTOR_BUTTON_BOLETO ).click();
-    } );
+    if ( appConfig.AUTO_BUY ) {
+        $( document ).ready( () => {
+            $( appConfig.SELECTOR_BUTTON_BOLETO ).click();
+        } );
+    }
 }
 
 if ( window.location.href.indexOf( 'https://www.kabum.com.br/cgi-local/site/caixa/confirmacao' ) >= 0 ) {
-    $( document ).ready( () => {
-        $( appConfig.SELECTOR_CHECK_TERMS ).click();
-        $( appConfig.SELECTOR_FORM_CONFIRM_BUY ).trigger( "submit" );
-    } );
+    if ( appConfig.AUTO_BUY ) {
+        $( document ).ready( () => {
+            $( appConfig.SELECTOR_CHECK_TERMS ).click();
+            $( appConfig.SELECTOR_FORM_CONFIRM_BUY ).trigger( "submit" );
+        } );
+    }
 }
 
