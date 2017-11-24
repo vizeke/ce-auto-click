@@ -24,13 +24,19 @@
     };
 } )(); */
 
-if ( window.location.href.indexOf( 'https://www.kabum.com.br/ofertas/blackfriday' ) >= 0 ) {
+console.log( 'teste-blackfriday fora do if' );
+
+
+if ( window.location.href.indexOf( 'https://www.kabum.com.br/ofertas/blackfriday' ) >= 0
+    || window.location.href.indexOf( 'https://blackfriday.kabum.com.br' ) >= 0 ) {
 
     const main = () => new Promotion().parseProductList();
-    
-    $button = $(appConfig.ACTIVATE_BUTTON_HTML);
-    $button.click(main);
-    $('body').append($button);
+
+    console.log( 'teste-blackfriday' );
+
+    $button = $( appConfig.ACTIVATE_BUTTON_HTML );
+    $button.click( main );
+    $( 'body' ).append( $button );
 
     // Zone.current.fork( profilingZoneSpec ).run( main );
 }
