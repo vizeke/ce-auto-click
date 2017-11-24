@@ -20,5 +20,5 @@ const appConfig = {
 
     DEFAULT_BUY_TIMEOUT: 100, 
     START_BUY_LOOP_GAP: 20,
-    AUTO_BUY: true
+    AUTO_BUY: false
 }
