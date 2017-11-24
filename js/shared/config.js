@@ -2,7 +2,7 @@ const appConfig = {
     // TODO: adjust selectors
     SELECTOR_LIST_PROMOTION: 'div.DIVcontador',
     SELECTOR_PRODUCT_NAME: '.contBLOCO2 .contTITULO.link a',
-    SELECTOR_PRODUCT_TIME: '',
+    SELECTOR_PRODUCT_TIME: 'span.t',
     SELECTOR_PRODUCT_BUY_BUTTON: '',
 
     PRODUCT_BASE_URL: 'https://www.kabum.com.br/cgi-local/site/produtos/descricao_ofertas.cgi?codigo=',

@@ -15,7 +15,8 @@ class Product {
 
         const url = anchor.attr( 'href' );
 
-        this.id = parseInt( url.split( 'produto/' )[ 1 ].split( '/' )[ 0 ] ); // TODO: might change
+        // this.id = parseInt( url.split( 'produto/' )[ 1 ].split( '/' )[ 0 ] ); // TODO: might change
+        this.id = parseInt( url.split( '?codigo=' )[ 1 ] ); // TODO: might change
         this.url = appConfig.PRODUCT_BASE_URL + this.id;
         this.description = anchor.text();
         this.intervalId = undefined;
@@ -101,23 +102,23 @@ class Product {
     }
 
     countdownLoop () {
-        if ( this.buySwitch.checked ) {
+        if ( this.active ) {
             if ( this.iiiiiiitsTiiiiiime() ) {
                 this.startBuyLoop();
             } else {
-                setTimeout( this.countdownLoop, 1000 );
+                setTimeout( () => this.countdownLoop(), 1000 );
             }
         }
     }
 
     iiiiiiitsTiiiiiime () {
-        let time = $product.find( appConfig.SELECTOR_PRODUCT_TIME );
+        let time = this.$product.find( appConfig.SELECTOR_PRODUCT_TIME );
 
         if ( !time.length ) {
-            return $product.find( appConfig.SELECTOR_PRODUCT_BUY_BUTTON ).length > 0;
+            return this.$product.find( appConfig.SELECTOR_PRODUCT_BUY_BUTTON ).length > 0;
         }
 
-        let strTime = time.html();
+        let strTime = time.text().trim();
 
         let secondsToPromotion = strTime
             .split( ':' )
