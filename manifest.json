@@ -23,6 +23,7 @@
                 "js/shared/config.js",
                 "js/shared/storage.js",
                 "js/shared/observer.js",
+                "js/shared/throttle.js",
                 "js/app/cart.js",
                 "js/app/switch.js",
                 "js/app/product.js",

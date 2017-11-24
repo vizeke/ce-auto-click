@@ -33,18 +33,7 @@ class Product {
 
         this.updateObserver = new Observer();
 
-        this.checkCart = this.throttle( appConfig.DEBOUNC_CHECKCART, () => {
-            return $.get( 'https://www.kabum.com.br/cgi-local/site/carrinho/carrinho.cgi', ( data ) => {
-                if ( $( data ).find( `.carrinhoTabela [data-id=${this.id}]` ).length ) {
-                    this.stop();
-                    if ( !this.bought ) {
-                        this.bought = true;
-                        toastr.success( `${this.description} bought, have fun!`, 'Hu3Hu3 BR' )
-                        this.updateCart();
-                    }
-                }
-            } )
-        } );
+        this.checkCartThrottle = throttle( appConfig.DEBOUNC_CHECKCART, this.checkCart );
     }
 
     get active () {
@@ -60,30 +49,18 @@ class Product {
     }
 
     tryClickBuy ( html ) {
-
-        //let d = performance.now();
-
         const strToFind = appConfig.ADD_TO_CART_BOUNDARY + this.id + '&di=';
         let link = html.substring( html.indexOf( strToFind ) );
 
         link = link.substring( 0, link.indexOf( '"' ) )
         if ( link ) {
             $.get( link, () => {
-                this.checkCart();
+                this.checkCartThrottle();
                 if ( ++this.successHits >= this.maxSuccessHitsNeeded ) {
                     this.stop();
                 }
             } );
         }
-        //console.log( "nativo: " + ( performance.now() - d ) )
-
-        /* d = performance.now();
-        let body = $(html);
-        console.log( "jquery: " + ( performance.now() - d ) ) 
-        const link = document.querySelectorAll( `[data-id="${this.id}"]` );
-        if ( link.length > 0 ) {
-            $.get( link[ 0 ].href, this.updateCart );
-        }*/
     }
 
     stop () {
@@ -146,102 +123,16 @@ class Product {
         chrome.runtime.sendMessage( { updateCart: true, productId: this.id } );
     }
 
-    debounce ( func, wait, immediate ) {
-        var timeout;
-        return () => {
-            let context = this;
-            let args = arguments;
-
-            let later = () => {
-                timeout = null;
-                if ( !immediate ) {
-                    func.apply( context, args );
+    checkCart () {
+        $.get( 'https://www.kabum.com.br/cgi-local/site/carrinho/carrinho.cgi', ( data ) => {
+            if ( $( data ).find( `.carrinhoTabela [data-id=${this.id}]` ).length ) {
+                this.stop();
+                if ( !this.bought ) {
+                    this.bought = true;
+                    toastr.success( `${this.description} bought, have fun!`, 'Hu3Hu3 BR' )
+                    this.updateCart();
                 }
-            };
-
-            let callNow = immediate && !timeout;
-
-            clearTimeout( timeout );
-
-            timeout = setTimeout( later, wait );
-
-            if ( callNow ) {
-                func.apply( context, args );
             }
-        };
-    };
-
-    throttle ( delay, noTrailing, callback, debounceMode ) {
-
-        // After wrapper has stopped being called, this timeout ensures that
-        // `callback` is executed at the proper times in `throttle` and `end`
-        // debounce modes.
-        var timeoutID;
-
-        // Keep track of the last time `callback` was executed.
-        var lastExec = 0;
-
-        // `noTrailing` defaults to falsy.
-        if ( typeof noTrailing !== 'boolean' ) {
-            debounceMode = callback;
-            callback = noTrailing;
-            noTrailing = undefined;
-        }
-
-        // The `wrapper` function encapsulates all of the throttling / debouncing
-        // functionality and when executed will limit the rate at which `callback`
-        // is executed.
-        function wrapper () {
-
-            var self = this;
-            var elapsed = Number( new Date() ) - lastExec;
-            var args = arguments;
-
-            // Execute `callback` and update the `lastExec` timestamp.
-            function exec () {
-                lastExec = Number( new Date() );
-                callback.apply( self, args );
-            }
-
-            // If `debounceMode` is true (at begin) this is used to clear the flag
-            // to allow future `callback` executions.
-            function clear () {
-                timeoutID = undefined;
-            }
-
-            if ( debounceMode && !timeoutID ) {
-                // Since `wrapper` is being called for the first time and
-                // `debounceMode` is true (at begin), execute `callback`.
-                exec();
-            }
-
-            // Clear any existing timeout.
-            if ( timeoutID ) {
-                clearTimeout( timeoutID );
-            }
-
-            if ( debounceMode === undefined && elapsed > delay ) {
-                // In throttle mode, if `delay` time has been exceeded, execute
-                // `callback`.
-                exec();
-
-            } else if ( noTrailing !== true ) {
-                // In trailing throttle mode, since `delay` time has not been
-                // exceeded, schedule `callback` to execute `delay` ms after most
-                // recent execution.
-                //
-                // If `debounceMode` is true (at begin), schedule `clear` to execute
-                // after `delay` ms.
-                //
-                // If `debounceMode` is false (at end), schedule `callback` to
-                // execute after `delay` ms.
-                timeoutID = setTimeout( debounceMode ? clear : exec, debounceMode === undefined ? delay - elapsed : delay );
-            }
-
-        }
-
-        // Return the wrapper function.
-        return wrapper;
-
-    };
+        } )
+    }
 }
