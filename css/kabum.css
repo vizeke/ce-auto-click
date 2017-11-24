@@ -11,6 +11,7 @@ button.activate {
   display: inline-block;
   width: 60px;
   height: 34px;
+  margin: 15px;
 }
 
 /* Hide default HTML checkbox */
@@ -62,4 +63,8 @@ input:checked + .slider-input:before {
 
 .slider-input.round:before {
   border-radius: 50%;
+}
+
+div.DIVcontador .contBLOCO3 {
+  margin-top: 10px;
 }
