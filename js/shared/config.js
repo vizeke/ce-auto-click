@@ -20,5 +20,6 @@ const appConfig = {
 
     DEFAULT_BUY_TIMEOUT: 100, 
     START_BUY_LOOP_GAP: 20,
-    AUTO_BUY: false
+    AUTO_BUY: false,
+    DEBOUNC_CHECKCART: 5000
 }
