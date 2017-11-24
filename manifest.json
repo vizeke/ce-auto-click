@@ -9,7 +9,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://www.kabum.com.br/*"
+                "https://*.kabum.com.br/*"
             ],
             "css": [
                 "css/kabum.css",

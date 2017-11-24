@@ -1,7 +1,7 @@
 let carts = [];
 let promotions = [];
 const CART_URL = 'https://www.kabum.com.br/cgi-local/site/carrinho/carrinho.cgi';
-const PROMOTION_URL = 'https://www.kabum.com.br/ofertas/lista';
+const PROMOTION_URL = 'https://blackfriday.kabum.com.br';
 
 chrome.runtime.onMessage.addListener(
     ( request, sender, sendResponse ) => {
